@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* Escanea todos los componentes de la librería */
+@source "../components";
+@source "../libs";
+@source "../modals";
