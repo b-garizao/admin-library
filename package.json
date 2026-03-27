@@ -33,6 +33,7 @@
     "dist"
   ],
   "scripts": {
+    "prepare": "rollup -c",
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "build:fresh": "rm -rf dist && rollup -c"

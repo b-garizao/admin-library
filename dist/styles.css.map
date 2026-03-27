@@ -1,0 +1,1 @@
+{"version":3,"sources":["globals.css"],"names":[],"mappings":"AAAA,qBAAqB,CAGrB,uBAAuB,CACvB,iBAAiB,CACjB,mBAAmB","file":"styles.css","sourcesContent":["@import \"tailwindcss\";\n\n/* Escanea todos los componentes de la librería */\n@source \"../components\";\n@source \"../libs\";\n@source \"../modals\";"]}
