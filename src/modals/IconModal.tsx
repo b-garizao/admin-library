@@ -34,8 +34,15 @@ interface IconModalProps {
   open: boolean;
   onClose: () => void;
   onSelect: (iconName: string) => void;
-  selectedValue?: string;
+  selectedValue?: string | IconData;
 }
+
+const normalizeSelectedValue = (value: string | IconData | undefined): string | undefined => {
+  if (!value) return undefined;
+  if (typeof value === "string") return value;
+  if (typeof value === "object" && "name" in value) return value.name;
+  return undefined;
+};
 
 export const IconModal = ({
   open,
@@ -104,29 +111,36 @@ export const IconModal = ({
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
-          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2">
-            {visibleIcons.map((item) => (
-              <Tooltip
-                title={item.value}
-                key={item.value}
-                mouseEnterDelay={0.5}
-              >
-                <div
-                  className={`
-                    aspect-square flex items-center justify-center rounded-lg cursor-pointer
-                    border-2 transition-all duration-200 hover:scale-105
-                    ${
-                      selectedValue === item.value
+          <div
+            className="grid gap-2"
+            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(56px, 1fr))" }}
+          >
+            {visibleIcons.map((item) => {
+              const normalizedSelected = normalizeSelectedValue(selectedValue);
+              const isSelected = normalizedSelected === item.value;
+
+              return (
+                <Tooltip title={item.value} key={item.value} mouseEnterDelay={0.2}>
+                  <button
+                    type="button"
+                    className={
+                      `
+                      aspect-square flex items-center justify-center rounded-lg border-2 transition-all duration-200
+                      ${isSelected
                         ? "border-primary bg-primary/10 text-primary shadow-md"
                         : "border-gray-100 hover:border-primary/30 hover:bg-gray-50 text-gray-600"
+                      }
+                      hover:scale-105
+                    `
                     }
-                  `}
-                  onClick={() => handleSelect(item.value)}
-                >
-                  <Lineicons icon={item.icon} size={28} />
-                </div>
-              </Tooltip>
-            ))}
+                    onClick={() => handleSelect(item.value)}
+                    aria-pressed={isSelected}
+                  >
+                    <Lineicons icon={item.icon} size={28} />
+                  </button>
+                </Tooltip>
+              );
+            })}
           </div>
 
           {hasMore && (

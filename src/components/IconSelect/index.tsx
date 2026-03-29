@@ -5,16 +5,36 @@ import * as FreeIcons from "@lineiconshq/free-icons";
 import type { IconData } from "@lineiconshq/free-icons";
 import { SearchOutlined } from "@ant-design/icons";
 import { IconModal } from "../../modals";
+import { getIcon } from "../../libs/icosLibs";
+
+type IconSelectValue = string | IconData | undefined;
 
 interface IconSelectProps {
-  value?: string;
+  value?: IconSelectValue;
   onChange?: (value: string) => void;
   placeholder?: string;
 }
 
-const findIcon = (name: string): IconData | undefined => {
+const normalizeValue = (value: IconSelectValue): string | undefined => {
+  if (!value) return undefined;
+  if (typeof value === "string") return value;
+  if (typeof value === "object" && "name" in value) return (value as IconData).name;
+  return undefined;
+};
+
+const findIcon = (value: IconSelectValue): IconData | undefined => {
+  const name = normalizeValue(value);
   if (!name) return undefined;
-  return (FreeIcons as Record<string, any>)[name];
+
+  const directIcon = (FreeIcons as Record<string, any>)[name];
+  if (directIcon) return directIcon as IconData;
+
+  const fallbackIcon = getIcon(name);
+  if (fallbackIcon && typeof fallbackIcon !== "string") {
+    return fallbackIcon as IconData;
+  }
+
+  return undefined;
 };
 
 export const IconSelect: React.FC<IconSelectProps> = ({
