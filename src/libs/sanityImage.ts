@@ -1,9 +1,15 @@
 export function sanityImageUrl(
   builder: any,
   source: { asset?: { _ref?: string } } | undefined,
-): string | null {
-  if (!source?.asset?._ref) return null;
-  return builder.image(source).url();
+): string {
+  if (!source?.asset?._ref) return "";
+  if (source.asset._ref.startsWith("file-")) return "";
+
+  try {
+    return builder.image(source).url() ?? "";
+  } catch {
+    return "";
+  }
 }
 
 /** Comprueba si un valor es una referencia de imagen de Sanity. */
@@ -17,6 +23,10 @@ function isSanityImageRef(
     typeof (value as { asset?: unknown }).asset === "object" &&
     typeof (value as { asset?: { _ref?: unknown } }).asset?._ref === "string"
   );
+}
+
+function isSanityFileAssetRef(value: unknown): value is { asset?: { _ref?: string } } {
+  return isSanityImageRef(value) && !!value.asset?._ref?.startsWith("file-");
 }
 
 /** Comprueba si un valor es una referencia de archivo de Sanity.
@@ -49,8 +59,8 @@ function processSanityFile(
   builder: any,
   env: envProp,
   data: any,
-): string | null {
-  if (!data) return null;
+): string {
+  if (!data) return "";
 
   // many file references come through as `{ _type: 'file', asset: { _ref: 'file-<id>-<ext>' } }`.
   // build the CDN url directly rather than asking the image helper, which only
@@ -72,9 +82,9 @@ function processSanityFile(
   // image (or the regexp above didn't match).  this covers any accidental
   // `image` types that were passed in.
   try {
-    return builder.image(data).url();
+    return builder.image(data).url() ?? "";
   } catch {
-    return null;
+    return "";
   }
 }
 
@@ -82,8 +92,9 @@ export function processImages<T>(builder: any, env: envProp, data: T): T {
   if (data === null || data === undefined) {
     return data;
   }
-  if (isSanityFileRef(data)) {
-    // si es un fichero/archivo devolvemos directamente la URL o `null`.
+  if (isSanityFileRef(data) || isSanityFileAssetRef(data)) {
+    // si es un fichero/archivo (incluyendo asset file-... dentro de un objeto image)
+    // devolvemos directamente la URL o cadena vacía.
     return processSanityFile(builder, env, data) as unknown as T;
   }
   if (isSanityImageRef(data)) {
