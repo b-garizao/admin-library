@@ -96,7 +96,7 @@ export const IconModal = ({
       footer={null}
       width={720}
       centered
-      bodyStyle={{ padding: "0" }}
+      styles={{ body: { padding: "0" } }}
     >
       <div className="flex flex-col h-[70vh]">
         <div className="p-4 border-b bg-gray-50/50">
@@ -112,8 +112,7 @@ export const IconModal = ({
 
         <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
           <div
-            className="grid gap-2"
-            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(56px, 1fr))" }}
+            className="grid gap-2 grid-cols-4 sm:grid-cols-6"
           >
             {visibleIcons.map((item) => {
               const normalizedSelected = normalizeSelectedValue(selectedValue);
@@ -127,8 +126,8 @@ export const IconModal = ({
                       `
                       aspect-square flex items-center justify-center rounded-lg border-2 transition-all duration-200
                       ${isSelected
-                        ? "border-primary bg-primary/10 text-primary shadow-md"
-                        : "border-gray-100 hover:border-primary/30 hover:bg-gray-50 text-gray-600"
+                        ? "border-black bg-black/10 text-black shadow-md"
+                        : "border-gray-100 hover:border-black/30 hover:bg-gray-50 text-gray-600"
                       }
                       hover:scale-105
                     `

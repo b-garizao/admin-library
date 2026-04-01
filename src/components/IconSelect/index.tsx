@@ -57,8 +57,8 @@ export const IconSelect: React.FC<IconSelectProps> = ({
           className={`
             w-10 h-10 flex items-center justify-center rounded-lg border transition-all duration-200
             ${value 
-              ? "bg-white border-gray-200 hover:border-primary shadow-sm text-primary" 
-              : "bg-gray-50 border-dashed border-gray-300 hover:border-primary/50 text-gray-400"
+              ? "bg-white border-gray-200 hover:border-black shadow-sm text-black" 
+              : "bg-gray-50 border-dashed border-gray-300 hover:border-black/50 text-gray-400"
             }
             cursor-pointer
           `}

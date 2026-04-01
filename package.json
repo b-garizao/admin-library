@@ -40,11 +40,13 @@
   },
   "peerDependencies": {
     "react": ">=17",
-    "react-dom": ">=17"
+    "react-dom": ">=17",
+    "react-router-dom": ">=6"
   },
   "dependencies": {
     "@lineiconshq/free-icons": "^1.0.4",
     "@lineiconshq/react-lineicons": "^1.0.5",
+    "@sanity/client": "^7.0.0",
     "antd": "^5.0.0",
     "bcrypt-ts": "^5.0.0",
     "clsx": "^2.1.1",
