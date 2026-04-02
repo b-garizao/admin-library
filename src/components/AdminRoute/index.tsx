@@ -17,7 +17,7 @@ interface AdminRouteProps {
 const AdminRoute: React.FC<AdminRouteProps> = ({
   children,
   user,
-  redirectTo = '/login',
+  redirectTo = '/admin/login',
 }) => {
   if (!user) {
     return <Navigate to={redirectTo} replace />;
